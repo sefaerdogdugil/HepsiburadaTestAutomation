@@ -6,33 +6,36 @@ import com.hbtestautomation.utility.ReadExcelFile;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.List;
+import java.util.Map;
+
 public class LoginDataDrivenTest extends BaseTest {
 
     String fileName = System.getProperty("user.dir") + "\\TestData\\TestInfo.xlsx";
 
-    @Test(dataProvider = "LoginDataProvider")
-    void VerifyLogin(String username, String password) throws InterruptedException {
-        System.out.println("Test Data - Username: " + username + ", Password: " + password);
+    @Test(priority = 1, dataProvider = "LoginDataProvider")
+    public void VerifyLogin(String userEmail, String userPwd) throws InterruptedException {
+        System.out.println("Testing login with: " + userEmail + " / " + userPwd);
         LoginPage lp = new LoginPage(driver);
-        lp.loginPortal(username, password);
-        lp.clearUsernamePassword(); // Comment out if needed for debugging
+        lp.loginToPortal(userEmail, userPwd);
+
     }
+
 
     @DataProvider(name = "LoginDataProvider")
-    public String[][] LoginDataProvider() {
-        int ttlRows = ReadExcelFile.getRowCount(fileName, "TestData");
-        int ttlColumns = ReadExcelFile.getColCount(fileName, "TestData");
+    public Object[][] LoginDataProvider() {
+        List<Map<Integer, String>> data = ReadExcelFile.readExcelData(fileName, "LoginData");
 
-        String[][] data = new String[ttlRows - 1][ttlColumns]; // Java-style array declaration
+        int ttlRows = ReadExcelFile.getRowCount(data);
+        int ttlColumns = ReadExcelFile.getColCount(data);
 
-        for (int i = 1; i < ttlRows; i++) {
-            for (int j = 0; j < ttlColumns; j++) {
-                String cellValue = ReadExcelFile.getCellValue(fileName, "TestData", i, j);
-                System.out.println("Reading Cell[" + i + "][" + j + "]: " + cellValue); // Log value
-                data[i - 1][j] = cellValue;
-            }
+        Object[][] testData = new Object[ttlRows][ttlColumns];
+
+        for (int i = 0; i < ttlRows; i++) {
+            testData[i][0] = data.get(i).get(0); // Kullanıcı adı (1. sütun)
+            testData[i][1] = data.get(i).get(1); // Şifre (2. sütun)
         }
-        return data;
+        return testData;
+          // ****Hepsiburada sayfası bu işlemi otomasyon için engellediğinden dolayı çalışmıyor****
     }
-
 }

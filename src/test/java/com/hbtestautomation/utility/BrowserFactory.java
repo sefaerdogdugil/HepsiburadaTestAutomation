@@ -11,14 +11,18 @@ import java.time.Duration;
 
 public class BrowserFactory {
 
-    public static WebDriver startApplication(String browserName, String appUrl) {
+    // ChromeOptions parametresi eklenmiş versiyon
+    public static WebDriver startApplication(String browserName, String appUrl, ChromeOptions options) {
 
         WebDriver driver;
         if (browserName.equalsIgnoreCase("Chrome")) {
             WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--remote-allow-origins=*");
-            driver = new ChromeDriver(options);
+            // Eğer seçenek sağlanmışsa, bu seçeneklerle ChromeDriver başlatılacak
+            if (options != null) {
+                driver = new ChromeDriver(options);
+            } else {
+                driver = new ChromeDriver();
+            }
         } else if (browserName.equalsIgnoreCase("Firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new FirefoxDriver();
@@ -29,7 +33,6 @@ public class BrowserFactory {
             System.out.println("We do not support this browser.");
             return null;
         }
-
         driver.manage().window().maximize();
         driver.get(appUrl);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
@@ -37,6 +40,7 @@ public class BrowserFactory {
         return driver;
     }
 
+    // Tarayıcıyı kapatma metodu
     public static void quitBrowser(WebDriver driver) {
         if (driver != null) {
             driver.quit();

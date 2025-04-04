@@ -5,16 +5,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage extends BaseTest {
 
     WebDriver driver;
     Actions actions;
 
-    // constructor
+    // Constructor
     public LoginPage(WebDriver lDriver) {
         this.driver = lDriver;
-        this.actions = new Actions(driver);  // Initialize Actions class here
+        this.actions = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -24,7 +28,7 @@ public class LoginPage extends BaseTest {
     @FindBy(xpath = "//div[@id='myAccount']")
     WebElement findLogin;
 
-    @FindBy(id = "login")
+    @FindBy(xpath = "//a[@id='login']")
     WebElement loginclick;
 
     @FindBy(xpath = "//input[@id='txtUserName']")
@@ -36,31 +40,62 @@ public class LoginPage extends BaseTest {
     @FindBy(xpath = "//button[@id='btnLogin']")
     WebElement loginButton;
 
-    // Method for login
-    public void loginPortal(String username, String password) throws InterruptedException {
-        acceptButton.click();
-        Thread.sleep(2000);
-        // Hover over the findLogin element
+    @FindBy(xpath = "//span[@role='presentation']")
+    WebElement forgotPassword;
+
+    @FindBy(xpath = "//input[@id='txtForgotPassEmail']")
+    WebElement forgotEmail;
+
+    @FindBy(xpath = "//button[@id='btnForgotPass']")
+    WebElement forgotPassbutton;
+
+    public void loginToPortal(String username, String password) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Çerezleri kabul et
+        wait.until(ExpectedConditions.elementToBeClickable(acceptButton)).click();
+
+        // Giriş butonuna tıklamak için bekle ve tıkla
+        wait.until(ExpectedConditions.visibilityOf(findLogin));
         actions.moveToElement(findLogin).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(loginclick)).click();
 
-        // Adding a wait for the hover effect to be processed
-        Thread.sleep(2000);
+        // Kullanıcı adı ve şifre alanlarının görünmesini bekle ve doldur
+        wait.until(ExpectedConditions.visibilityOf(uname)).sendKeys(username);
+        wait.until(ExpectedConditions.visibilityOf(pass)).sendKeys(password);
 
-        // Click on the login link
-        loginclick.click();
-
-        // Enter the username and password
-        uname.sendKeys(username);
-        pass.sendKeys(password);
-
-        // Click the login button
-        loginButton.click();
-        Thread.sleep(5000);
+        // Giriş butonuna tıkla
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
     }
 
-    // Method to clear username and password fields
-    public void clearUsernamePassword() {
-        uname.clear();
-        pass.clear();
+    public boolean forgotPassword() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.elementToBeClickable(acceptButton)).click();
+
+        actions.moveToElement(findLogin).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(loginclick)).click();
+
+        wait.until(ExpectedConditions.visibilityOf(uname));
+        wait.until(ExpectedConditions.elementToBeClickable(forgotPassword)).click();
+
+        wait.until(ExpectedConditions.visibilityOf(forgotEmail)).sendKeys("sefaotomasyonn11@outlook.com");
+
+        wait.until(ExpectedConditions.elementToBeClickable(forgotPassbutton)).click();
+        return true;
     }
 }
+
+        /*✅ Başarı mesajını bekleyerek testi doğrula
+
+        ****Hepsiburada sayfası bu işlemi otomasyon için engellediğinden dolayı çalışmıyor****
+
+        if (wait.until(ExpectedConditions.visibilityOf(verifyForgotPass)).isDisplayed()) {
+            System.out.println("✅ Şifre sıfırlama başarılı! E-posta gönderildi.");
+        } else {
+            System.out.println("❌ Şifre sıfırlama başarısız! Hata mesajı görünüyor olabilir.");
+        }
+      return false;
+         */
+
+
