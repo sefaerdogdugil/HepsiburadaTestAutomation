@@ -8,7 +8,7 @@ public class LoginTest extends BaseTest {
 
 
     @Test(priority = 1)
-    public void verifyLogin() throws  InterruptedException {
+    public void verifyLogin() {
         LoginPage lp = new LoginPage(driver);
         String username = "sefaotomasyonn11@outlook.com";
         String password = "Testotomasyon11";

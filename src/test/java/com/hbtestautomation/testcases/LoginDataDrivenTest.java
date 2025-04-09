@@ -14,7 +14,7 @@ public class LoginDataDrivenTest extends BaseTest {
     String fileName = System.getProperty("user.dir") + "\\TestData\\TestInfo.xlsx";
 
     @Test(priority = 1, dataProvider = "LoginDataProvider")
-    public void VerifyLogin(String userEmail, String userPwd) throws InterruptedException {
+    public void VerifyLogin(String userEmail, String userPwd) {
         System.out.println("Testing login with: " + userEmail + " / " + userPwd);
         LoginPage lp = new LoginPage(driver);
         lp.loginToPortal(userEmail, userPwd);
