@@ -49,6 +49,13 @@ public class CartPage {
                         driver.switchTo().window(windowHandle);
                         break;
                     }
+                    boolean result = addToCart();
+                    if (result) {
+                        System.out.println("Ürünler sepete başarıyla eklendi.");
+                    } else {
+                        System.out.println("Ürün ekleme işlemlerinde hata oluştu.");
+                    }
+
                 }
 
                 // Sepete Ekle butonunu bul ve tıkla
