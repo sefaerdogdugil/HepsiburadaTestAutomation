@@ -32,7 +32,7 @@ public class HomePage extends BaseTest {
     @FindBy(css = ".sf-OldHeader-FpTYTu4Avgrxt5ZgRSEL")
     WebElement logoMain;
 
-    @FindBy(css = "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(5) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > ul:nth-child(1) > li:nth-child(1)")
+    @FindBy(css = ".sf-MenuItems-WulWXvlfIAwNiOUGY7FP")
     List<WebElement> menuList;
 
     public void searchProduct(String productName) throws InterruptedException {
