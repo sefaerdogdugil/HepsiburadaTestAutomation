@@ -52,7 +52,8 @@ public class HomePage extends BaseTest {
         action.sendKeys(Keys.ENTER).perform();  // ACTIONS nesnesi üzerinden ENTER tuşu gönderiliyor
     }
 
-    public boolean isSearchResultDisplayed() {
+    public boolean isSearchResultDisplayed() throws InterruptedException {
+        Thread.sleep(5000);
         try {
             return searchResult.isDisplayed();
         } catch (Exception e) {

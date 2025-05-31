@@ -91,7 +91,7 @@ public class LoginPage extends BaseTest {
         ****Hepsiburada sayfası bu işlemi otomasyon için engellediğinden dolayı çalışmıyor****
 
         if (wait.until(ExpectedConditions.visibilityOf(verifyForgotPass)).isDisplayed()) {
-            System.out.println("✅ Şifre sıfırlama başarılı! E-posta gönderildi.");
+            System.out.println("✅ Şifre sıfırlama başarılı! E-postas gönderildi.");
         } else {
             System.out.println("❌ Şifre sıfırlama başarısız! Hata mesajı görünüyor olabilir.");
         }
